@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Among Us Codes</title>
+	    <link href="font/stylesheet.css" rel="stylesheet">
+		<style>
+			ul {
+				list-style: none;
+				font-family: komika_axisregular;
+				font-size: 100px;
+			}
+			p {
+				font-family: komika_axisregular;
+			}
+		</style>
+    </head>
+    <body>
+<div id="app">
+			<p>Current Code:</p>
+            <ul class='code' >
+                <li v-for="item in items">
+                    <p>{{ item['fields']['Item'] }}</p>
+                    <img :src="item['fields']['Photo'][0]['thumbnails']['large']['url']" alt="" v-if="item['fields']['Photo']" width="150">
+                </li>
+            </ul>            
+        </div><!--app-->
+        
+        <!-- Include Dependancy Scripts -->
+        <script type="text/javascript" src="https://unpkg.com/vue"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script type="text/javascript">
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    items: []
+                },
+                mounted: function(){
+                   this.loadItems(); 
+                },
+                methods: {
+                    loadItems: function(){
+                        
+                        // Init variables
+                        var self = this
+                        var app_id = "appztBU18MVuIhCTx";
+                        var app_key = "key5r7Tn5s3a0ioY7";
+                        this.items = []
+axios.get(
+                            "https://api.airtable.com/v0/"+app_id+"/Menu?view=Grid%20view",
+                            { 
+                                headers: { Authorization: "Bearer "+app_key } 
+                            }
+                        ).then(function(response){
+                            self.items = response.data.records
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
