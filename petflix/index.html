@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://kit.fontawesome.com/9cbb40d6bf.js" crossorigin="anonymous"></script>
+		<title>Petflix ~ Home</title>
+		<link rel='stylesheet' href='font/stylesheet.css' type='text/css'>
+		<link rel='stylesheet' href='main.css' type='text/css'>
+	</head>
+	<body>
+		
+		<div class="topnav">
+		  <a  class="logo" href='index.html'><image height='30px' src='img/logo-nobg.png'></image></a>
+		  <a class="active" href="index.html">Home</a>
+		  <a href="addmypet.html">Add my pet</a>
+		</div>
+		
+		<div id="app">
+            <ul>
+				<li v-for="item in items">
+					<div class='inline-img'>
+						<h2>{{ item['fields']['Item'] }}</h3>
+						<p>{{ item['fields']['Description'] }}</p>
+						<p><i class="fas fa-map-marker-alt"></i>  {{ item['fields']['Price'] }}</p>
+						<img :src="item['fields']['Photo'][0]['thumbnails']['large']['url']" alt="" width='30%' height='' v-if="item['fields']['Photo']" width="150">
+						<br>
+						<a href='mailto:severus.snape@hogwarts.edu?subject=Petflix!&body=Hey%2C%20I%20wanted%20to%20share%20this%20with%20you.%20Petflix!%20Try%20adding%20your%20own%20pets%0D%0AgusB22.github.io%2Fpetflix%2Findex.html'><i class="fas fa-envelope"></i>  Share</a>
+						<hr>
+					</div>
+				</li>
+            </ul>            
+        </div><!--app-->
+		<h3><a href='https://instagram.com/gbean_07'><i class="fab fa-instagram"></i></a></h3>
+        
+        <!-- Include Dependancy Scripts -->
+        <script type="text/javascript" src="https://unpkg.com/vue"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script type="text/javascript">
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    items: []
+                },
+                mounted: function(){
+                   this.loadItems(); 
+                },
+                methods: {
+                    loadItems: function(){
+                        
+                        // Init variables
+                        var self = this
+                        var app_id = "appku1WViNIDfpPTR";
+                        var app_key = "key5r7Tn5s3a0ioY7";
+                        this.items = []
+axios.get(
+                            "https://api.airtable.com/v0/"+app_id+"/Menu?view=Grid%20view",
+                            { 
+                                headers: { Authorization: "Bearer "+app_key } 
+                            }
+                        ).then(function(response){
+                            self.items = response.data.records
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                }
+            })
+        </script>
+		
+	</body>
+</html>
