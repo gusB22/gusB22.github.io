@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Order Lists</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/9cbb40d6bf.js" crossorigin="anonymous"></script>
+		<style>
+			html {
+				font-family: 'Roboto Condensed', sans-serif;
+			}
+			h1 {
+				font-size: 45px;
+				display: inline-block;
+			}
+			button {
+				height: 50px;
+				width: 50px;
+				float: right;
+			}
+			
+			#main {
+				text-align: center;
+				width: 100%;
+			}
+			
+			.fa {
+				font-size: 30px;
+			}
+			p {
+				text-align: center;
+			}
+		</style>
+	</head>
+    <body>
+<div id="app">
+            <div id='main'><h1>Order List&nbsp;<button onclick='location.reload()'><i class="fa fa-refresh" aria-hidden="true"></i></button></h1></div>
+            <p>Older orders are listed at the top</p>
+			<ol>
+                <li v-for="item in items">
+                    <h3>Order For: {{ item['fields']['Item'] }}</h3>
+                    <p><strong>Stuff: </strong>{{ item['fields']['Category'] }}</p>
+                    <p>Special Instructions:<br>{{ item['fields']['Description'] }}</p>
+                    <img :src="item['fields']['Photo'][0]['thumbnails']['large']['url']" alt="" v-if="item['fields']['Photo']" width="150">
+                </li>
+            </ol>            
+        </div><!--app-->
+        
+        <!-- Include Dependancy Scripts -->
+        <script type="text/javascript" src="https://unpkg.com/vue"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<script type="text/javascript">
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    items: []
+                },
+                mounted: function(){
+                   this.loadItems(); 
+                },
+                methods: {
+                    loadItems: function(){
+                        
+                        // Init variables
+                        var self = this
+                        var app_id = "appoXrPiG8y4Gpd1j";
+                        var app_key = "keyOqQ03HCbJenYJw";
+                        this.items = []
+axios.get(
+                            "https://api.airtable.com/v0/"+app_id+"/Menu?view=Grid%20view",
+                            { 
+                                headers: { Authorization: "Bearer "+app_key } 
+                            }
+                        ).then(function(response){
+                            self.items = response.data.records
+                        }).catch(function(error){
+                            console.log(error)
+                        })
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
