@@ -26,7 +26,7 @@
 			.fa {
 				font-size: 30px;
 			}
-			p {
+			.poopie {
 				text-align: center;
 			}
 		</style>
@@ -34,7 +34,7 @@
     <body>
 <div id="app">
             <div id='main'><h1>Order List&nbsp;<button onclick='location.reload()'><i class="fa fa-refresh" aria-hidden="true"></i></button></h1></div>
-            <p>Older orders are listed at the top</p>
+            <p class='poopie'>Older orders are listed at the top</p>
 			<ol>
                 <li v-for="item in items">
                     <h3>Order For: {{ item['fields']['Item'] }}</h3>
